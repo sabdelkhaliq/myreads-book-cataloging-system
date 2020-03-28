@@ -4,28 +4,27 @@ import PropTypes from 'prop-types'
 
 class BookShelf extends Component {
 
-     static propTypes = {
-         title: PropTypes.string.isRequired,
-         books : PropTypes.array.isRequired,
-         onBookShelfChange: PropTypes.func.isRequired
-       }
+    static propTypes = {
+        title: PropTypes.string,
+        books: PropTypes.array.isRequired,
+        onBookShelfChange: PropTypes.func.isRequired
+    }
 
     constructor(props) {
         super(props);
         this.handleShelfUpdate = this.handleShelfUpdate.bind(this);
-      }
-    
-    handleShelfUpdate(newShelf,bookId) {
-        this.props.onBookShelfChange(newShelf, bookId);
-      }
+    }
 
-
+    handleShelfUpdate(newShelf, book) {
+        this.props.onBookShelfChange(newShelf, book);
+    }
 
     render() {
         let { title, books } = this.props;
         return (
             <div className="bookshelf">
-                <h2 className="bookshelf-title">{title}</h2>
+                {title &&
+                    <h2 className="bookshelf-title">{title}</h2>}
                 <div className="bookshelf-books">
                     <ol className="books-grid">
                         {books.map((book) =>
