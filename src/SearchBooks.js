@@ -27,7 +27,7 @@ class SearchBooks extends Component {
     updateQuery = (query) => {
         this.setState({ query: query });
         if (this.wordMap.some((w) => w === query)) {
-            BooksAPI.search(query).then(
+            BooksAPI.search(query).then(books => books.filter(book => book.imageLinks.thumbnail)).then(
                 books => this.setState({ searchedBooks: books }));
         } else if (query === "") {
             this.setState({ searchedBooks: [] });
