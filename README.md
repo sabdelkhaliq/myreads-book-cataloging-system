@@ -1,4 +1,4 @@
-# MyReads Project
+# MyReads - Book Management System
 
 ## Description
 
@@ -16,6 +16,7 @@ MyReads is a goodreads like app that allows users to manage the book(s) of inter
 - Using terminal navigate to the project folder you cloned and type 
     - $ npm update
     - $ npm install
+- Open a web browser and go to http://localhost:3001/
 
 ### Create React App
 
