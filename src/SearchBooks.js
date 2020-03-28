@@ -8,7 +8,7 @@ class SearchBooks extends Component {
     static propTypes = {
         updateBookShelf: PropTypes.func.isRequired
     }
-    
+
     constructor(props) {
         super(props);
         this.handleShelfUpdate = this.handleShelfUpdate.bind(this);
@@ -29,6 +29,8 @@ class SearchBooks extends Component {
         if (this.wordMap.some((w) => w === query)) {
             BooksAPI.search(query).then(
                 books => this.setState({ searchedBooks: books }));
+        } else if (query === "") {
+            this.setState({ searchedBooks: [] });
         }
     }
 
