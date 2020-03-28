@@ -12,26 +12,25 @@ class Book extends Component {
         super(props);
         this.onChangeBookShelf = this.onChangeBookShelf.bind(this);
         this.state = {
-            selectedValue : ""
+            selectedValue: "none"
         }
-      }
-
-    onChangeBookShelf (e) {
-        this.setState({ selectedValue : e.target.value });
-        this.props.changeBookShelf(e.target.value, this.props.book.id);
     }
 
-    componentWillMount (){
-        this.setState({ selectedValue : this.props.book.shelf });
+    onChangeBookShelf(e) {
+        const value = e.target.value;
+        this.setState({ selectedValue: value });
+        this.props.book.shelf = value;
+        this.props.changeBookShelf(value, this.props.book);
+    }
+
+    componentDidMount() {
+        this.setState({ selectedValue: this.props.book.shelf });
     }
 
     render() {
         let { book } = this.props;
-
         return (
-
             <div className="book">
-
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     <div className="book-shelf-changer">

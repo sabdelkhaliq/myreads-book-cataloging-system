@@ -1,82 +1,52 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import BookShelf from './BookShelf'
-
-class BooksApp extends React.Component {
- 
+import SearchBooks from './SearchBooks'
+import ListBooks from './ListBooks'
+import { Link, Route } from 'react-router-dom'
+class App extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      /**
-       * TODO: Instead of using this state variable to keep track of which page
-       * we're on, use the URL in the browser's address bar. This will ensure that
-       * users can use the browser's back and forward buttons to navigate between
-       * pages, as well as provide a good URL they can bookmark and share.
-       */
-      showSearchPage: false,
-      books : [],
+      books: [],
     }
     this.updateBookShelf = this.updateBookShelf.bind(this);
-}
-
-  componentDidMount (){
-    BooksAPI.getAll().then(
-    books => this.setState({ books: books }));
   }
 
-  updateBookShelf(newShelf, bookId){
+  componentDidMount() {
+    BooksAPI.getAll().then(
+      books => this.setState({ books: books }));
+  }
+
+  updateBookShelf(newShelf, book) {
     let books = this.state.books;
-    const bookIndex = books.findIndex(book => book.id===bookId);
-    books[bookIndex].shelf = newShelf; 
+    const bookIndex = books.findIndex(b => b.id === book.id);
+    if (bookIndex === -1)
+      books.push(book);
+    else
+      books[bookIndex].shelf = newShelf;
     this.setState({ books: books });
+    BooksAPI.update(book, newShelf);
   }
 
   render() {
-     
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-              <BookShelf onBookShelfChange={this.updateBookShelf} title={'Currently Reading'} books={this.state.books.filter(book=> book.shelf ==='currentlyReading')}/>
-              <BookShelf onBookShelfChange={this.updateBookShelf} title={'Want to Read'} books={this.state.books.filter(book=> book.shelf ==='wantToRead')}/>
-              <BookShelf onBookShelfChange={this.updateBookShelf} title={'Read'} books={this.state.books.filter(book=> book.shelf ==='read')}/>
-              </div>
-            </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-            </div>
-          </div>
-        )}
+        <Route exact path="/Search" render={() => (
+          <SearchBooks updateBookShelf={this.updateBookShelf} />
+        )} />
+        <Route exact path="/" render={() => (
+          <ListBooks books={this.state.books} updateBookShelf={this.updateBookShelf} />
+        )} />
+        <div className="open-search">
+          <Link to="/Search">
+            <button >Add a book</button>
+          </Link>
+        </div>
       </div>
     )
   }
 }
 
-export default BooksApp
+export default App
