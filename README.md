@@ -7,7 +7,7 @@ MyReads is a goodreads like app that allows users to manage the book(s) of inter
 ## Installation
 
 - Download [Git](https://git-scm.com/downloads) at your local machine.
-- Open Git Bash.
+- Open Git Bash, or your prefered terminal.
 - Clone the repoistory by clicking the _green_ clone, or fork button. You can also use the download button at the top right to download the source code.
 - If you are using Github, you can add SSH Key to your account. [add SSH Key to your account](https://help.github.com/en/enterprise/2.15/user/articles/adding-a-new-ssh-key-to-your-github-account)
 - Using Git Bash type ```git clone git@github.com:sabdelkhaliq/myreads-book-cataloging-system.git```
