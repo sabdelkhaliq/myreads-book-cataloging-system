@@ -27,9 +27,9 @@ class ListBooks extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Currently Reading'} books={books.filter(book => book.shelf === 'currentlyReading')} />
-                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Want to Read'} books={books.filter(book => book.shelf === 'wantToRead')} />
-                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Read'} books={books.filter(book => book.shelf === 'read')} />
+                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Currently Reading'} books={books.filter(book => book.shelf === 'currentlyReading' && book.imageLinks && book.imageLinks.thumbnail)} />
+                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Want to Read'} books={books.filter(book => book.shelf === 'wantToRead' && book.imageLinks && book.imageLinks.thumbnail)} />
+                        <BookShelf onBookShelfChange={this.updateBookShelf} title={'Read'} books={books.filter(book => book.shelf === 'read' && book.imageLinks && book.imageLinks.thumbnail)} />
                     </div>
                 </div>
             </div>)

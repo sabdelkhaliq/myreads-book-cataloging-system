@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 import PropTypes from 'prop-types'
+import { Debounce } from 'react-throttle';
+
 class SearchBooks extends Component {
 
     static propTypes = {
@@ -13,11 +15,9 @@ class SearchBooks extends Component {
         super(props);
         this.handleShelfUpdate = this.handleShelfUpdate.bind(this);
         this.state = {
-            query: '',
             searchedBooks: []
         }
         this.updateQuery = this.updateQuery.bind(this);
-        this.wordMap = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
     }
 
     handleShelfUpdate(newShelf, book) {
@@ -25,17 +25,18 @@ class SearchBooks extends Component {
     }
 
     updateQuery = (query) => {
-        this.setState({ query: query });
-        if (this.wordMap.some((w) => w === query)) {
-            BooksAPI.search(query).then(books => books.filter(book => book.imageLinks.thumbnail)).then(
-                books => this.setState({ searchedBooks: books }));
-        } else if (query === "") {
+
+        if (!query) {
             this.setState({ searchedBooks: [] });
+        } else {
+            BooksAPI.search(query.trim()).then(
+                books => ((books && books.length) && this.setState({ searchedBooks: books }))
+            );
         }
     }
 
     render() {
-        let { searchedBooks, query } = this.state;
+        let { searchedBooks } = this.state;
 
         return (
             <div className="search-books">
@@ -44,14 +45,16 @@ class SearchBooks extends Component {
                         <button className="close-search" >Close</button>
                     </Link>
                     <div className="search-books-input-wrapper">
-                        <input type="text" placeholder="Search by title or author" value={query}
-                            onChange={(event) => this.updateQuery(event.target.value)} />
+                        <Debounce time="200" handler="onChange">
+                            <input type="text" placeholder="Search by title or author"
+                                onChange={(event) => this.updateQuery(event.target.value)} />
+                        </Debounce >
                     </div>
                 </div>
                 <div className="search-books-results">
                     <div className="bookshelf">
                         <ol className="books-grid">
-                            {searchedBooks.map((book) => <li key={book.id}><Book changeBookShelf={this.handleShelfUpdate} book={book} /></li>)}
+                            {searchedBooks.map((book) => book.imageLinks && book.imageLinks.thumbnail && <li key={book.id}><Book changeBookShelf={this.handleShelfUpdate} book={book} /></li>)}
                         </ol>
                     </div>
                 </div>
