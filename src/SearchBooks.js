@@ -30,8 +30,18 @@ class SearchBooks extends Component {
             this.setState({ searchedBooks: [] });
         } else {
             BooksAPI.search(query.trim()).then(
-                books => ((books && books.length) && this.setState({ searchedBooks: books }))
-            );
+                books => (
+                    (books && books.length) ?
+                        this.setState({
+                            searchedBooks: books.map(searchBook => {
+                                let updatedBook = this.props.userBooks.slice().find(userBook => userBook.id === searchBook.id);
+                                return updatedBook ? updatedBook : searchBook;
+                            })
+                        })
+                        :
+                        this.setState({ searchedBooks: [] })
+                )
+            )
         }
     }
 
