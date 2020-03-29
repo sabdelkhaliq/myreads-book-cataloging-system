@@ -10,7 +10,7 @@ MyReads is a goodreads like app that allows users to manage the book(s) of inter
 - Open Git Bash.
 - Clone the repoistory by clicking the _green_ clone, or fork button. You can also use the download button at the top right to download the source code.
 - If you are using Github, you can add SSH Key to your account. [add SSH Key to your account](https://help.github.com/en/enterprise/2.15/user/articles/adding-a-new-ssh-key-to-your-github-account)
-- Using Git Bash type ```git clone git@github.com:sabdelkhaliq/reactnd-project-myreads-starter.git```
+- Using Git Bash type ```git clone git@github.com:sabdelkhaliq/myreads-book-cataloging-system.git```
 - hit enter
 - Download [Node](http://nodejs.org/).
 - Using terminal navigate to the project folder you cloned and type 
